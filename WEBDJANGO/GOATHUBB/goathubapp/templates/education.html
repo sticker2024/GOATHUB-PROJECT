@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Resources</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e0f7fa; /* Light blue background */
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative; /* For positioning the button */
+        }
+
+        .back-button {
+            position: absolute; /* Position it in the container */
+            top: 20px; /* Distance from the top */
+            left: 20px; /* Distance from the left */
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white;
+            padding: 5px 10px; /* Smaller padding */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 14px; /* Smaller font size */
+        }
+
+        .back-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'index' %}" class="back-button">Back</a><!-- Back Button -->
+        <h1>Education Resources</h1>
+        {% load static %}
+<img src="{% static 'images/skeleton.jpg' %}" alt="Skeleton Diagram"><!-- Replace with your image URL -->
+        <p>
+            A goat's skeleton provides the structural framework for its body and is composed of bones that support movement, protect internal organs, and anchor muscles. The skeleton is divided into two main parts: the axial skeleton and the appendicular skeleton.
+        </p>
+    </div>
+</body>
+</html>

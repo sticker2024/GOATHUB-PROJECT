@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goat Hub Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #5a3e2c;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px; /* Centering the navbar */
+      width: 100%;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #7a5a48;
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px 0;
+      background-color: #5a3e2c;
+      color: white;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      margin-top: 20px;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav a {
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GOAT HUB</h1>
+    <div class="navbar">
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Logout</a> <!-- Moved Logout beside Home -->
+        <a href=" ">STATICS</a>
+        <a href="{% url 'special_cases' %}">SPECIAL CASES</a>
+        <a href="{% url 'add_vet' %}">ADD VETERINARY</a>
+        <a href="{% url 'veterinary_list' %}">VETERINARIES</a>
+        <a href="{% url 'farmer_list' %}">INDIVIDUAL FARMERS</a>
+        <a href="{% url 'cooperative_farmers' %}">COOPERATIVES</a>
+      </nav>
+    </div>
+  </header>
+
+  <footer>
+    <p>&copy; 2024 Goat Hub. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consult a Vet</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #7ec8e3, #4a90e2);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form container */
+        .form-container {
+            background: #ffffff;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            position: relative; /* Enable positioning for the back button */
+        }
+
+        /* Back Button */
+        .back-button {
+            background-color: #006400; /* Dark Green */
+            color: white;
+            padding: 5px 10px; /* Smaller padding */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px; /* Smaller font size */
+            position: absolute; /* Position it in the container */
+            top: 20px; /* Distance from the top */
+            left: 20px; /* Distance from the left */
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #004d00; /* Darker green on hover */
+        }
+
+        /* Form header */
+        .form-container h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-decoration: underline;
+        }
+
+        /* Form groups */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        /* File input styling */
+        .form-group input[type="file"] {
+            padding: 5px;
+            border: none;
+        }
+
+        /* Submit button */
+        button {
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #218838;
+            transform: scale(1.03);
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <a href="index.html" class="back-button">Back</a>
+        <h2>Consult a Vet</h2>
+        <form action="{% url 'consult_a_vet' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone-number">Phone Number</label>
+                <input type="tel" id="phone-number" name="phone_number" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Enter your location" required>
+            </div>
+            <div class="form-group">
+                <label for="message">How can we help you?</label>
+                <textarea id="message" name="message" placeholder="Describe your issue or inquiry" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Image (Optional)</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

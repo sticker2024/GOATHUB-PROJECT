@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veterinary List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #5a3e2c;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    .search-container {
+      margin: 20px auto;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .search-input {
+      padding: 10px;
+      width: calc(100% - 22px);
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+
+    .search-input:focus {
+      border-color: #5a3e2c;
+      outline: none;
+    }
+
+    .search-button {
+      padding: 10px 15px;
+      background-color: #5a3e2c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .search-button:hover {
+      background-color: #7a5a48;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #5a3e2c;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #5a3e2c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #7a5a48;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      background-color: #5a3e2c;
+      color: white;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .search-input {
+        width: 100%;
+      }
+    }
+
+    #edit-form input[type="text"],
+    #edit-form input[type="email"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: calc(100% - 22px);
+      margin-bottom: 10px;
+    }
+
+    #edit-form button {
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    function toggleEditForm(id) {
+      const form = document.getElementById(`edit-form-${id}`);
+      form.style.display = form.style.display === 'table-row' ? 'none' : 'table-row';
+      const deleteConfirm = document.getElementById(`delete-confirm-${id}`);
+      deleteConfirm.style.display = 'none'; // Hide delete confirmation
+    }
+
+    function toggleDeleteForm(id) {
+      const confirm = document.getElementById(`delete-confirm-${id}`);
+      confirm.style.display = confirm.style.display === 'table-row' ? 'none' : 'table-row';
+      const editForm = document.getElementById(`edit-form-${id}`);
+      editForm.style.display = 'none'; // Hide edit form
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Veterinary List</h1>
+  </header>
+
+  <div class="search-container">
+    <form method="GET" action="{% url 'veterinary_list' %}">
+      <input type="text" class="search-input" name="search" placeholder="Enter veterinary name..." value="{{ request.GET.search }}">
+      <button type="submit" class="search-button">Search</button>
+    </form>
+  </div>
+
+  <div class="results-container">
+    {% if veterinary_list %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>District</th>
+            <th>Specialty</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for veterinary in veterinary_list %}
+          <tr>
+            <td>{{ veterinary.veterinary_id }}</td>
+            <td>{{ veterinary.name }}</td>
+            <td>{{ veterinary.email }}</td>
+            <td>{{ veterinary.phone }}</td>
+            <td>{{ veterinary.district }}</td>
+            <td>{{ veterinary.specialty }}</td>
+            <td>
+              <button onclick="toggleEditForm({{ veterinary.veterinary_id }})">Edit</button>
+              <button onclick="toggleDeleteForm({{ veterinary.veterinary_id }})">Delete</button>
+            </td>
+          </tr>
+
+          <!-- Edit Form -->
+          <tr id="edit-form-{{ veterinary.veterinary_id }}" style="display: none;">
+            <td colspan="7">
+              <form method="POST" action="{% url 'edit_veterinary' veterinary.veterinary_id %}">
+                {% csrf_token %}
+                <input type="text" name="name" value="{{ veterinary.name }}" required>
+                <input type="email" name="email" value="{{ veterinary.email }}" required>
+                <input type="text" name="phone" value="{{ veterinary.phone }}" required>
+                <input type="text" name="district" value="{{ veterinary.district }}" required>
+                <input type="text" name="specialty" value="{{ veterinary.specialty }}" required>
+                <button type="submit">Save Changes</button>
+                <button type="button" onclick="toggleEditForm({{ veterinary.veterinary_id }})">Cancel</button>
+              </form>
+            </td>
+          </tr>
+
+          <!-- Delete Confirmation -->
+          <tr id="delete-confirm-{{ veterinary.veterinary_id }}" style="display: none;">
+            <td colspan="7">
+              <p>Are you sure you want to delete {{ veterinary.name }}?</p>
+              <form method="POST" action="{% url 'delete_veterinary' veterinary.veterinary_id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Yes, Delete</button>
+                <button type="button" onclick="toggleDeleteForm({{ veterinary.veterinary_id }})">Cancel</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7">No veterinarians found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No results to display.</p>
+    {% endif %}
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Goat Hub. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

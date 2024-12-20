@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Veterinary</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 26px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #006400;
+            box-shadow: 0 0 5px rgba(0, 100, 0, 0.5);
+        }
+
+        .form-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-button button {
+            background-color: #006400;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .form-button button:hover {
+            background-color: #004d00;
+            transform: translateY(-2px);
+        }
+
+        .form-button button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .errorlist {
+            color: #721c24;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 400px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-container h2 {
+                font-size: 24px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add New Veterinary</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'add_vet' %}" method="POST">
+            {% csrf_token %}
+            <!-- Veterinary Name -->
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter veterinary's name" required>
+                {% if form.name.errors %}
+                    <div class="errorlist">
+                        {{ form.name.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                {% if form.email.errors %}
+                    <div class="errorlist">
+                        {{ form.email.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+                {% if form.phone.errors %}
+                    <div class="errorlist">
+                        {{ form.phone.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- District -->
+            <div class="form-group">
+                <label for="district">District:</label>
+                <input type="text" id="district" name="district" placeholder="Enter district name" required>
+                {% if form.district.errors %}
+                    <div class="errorlist">
+                        {{ form.district.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Specialty -->
+            <div class="form-group">
+                <label for="specialty">Specialty:</label>
+                <select id="specialty" name="specialty" required>
+                    <option value="">Select specialty</option>
+                    <option value="goat">Goat Specialist</option>
+                    <option value="cattle">Cattle Specialist</option>
+                    <option value="sheep">Sheep Specialist</option>
+                </select>
+                {% if form.specialty.errors %}
+                    <div class="errorlist">
+                        {{ form.specialty.errors|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-button">
+                <button type="submit">Add Veterinary</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

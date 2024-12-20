@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation Statistics</title>
+</head>
+<body>
+    <h1>Consultation Statistics</h1>
+
+    <h2>Consultations per Location:</h2>
+    <ul>
+        {% for item in consultations_per_location %}
+            <li>{{ item.location }}: {{ item.total }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Most Reported Case:</h2>
+    <p>{{ most_reported_case.message }} ({{ most_reported_case.total }} reports)</p>
+</body>
+</html>

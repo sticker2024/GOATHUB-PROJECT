@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Cases - Goat Hub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #5a3e2c;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #5a3e2c;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #5a3e2c;
+      color: white;
+    }
+
+    .case-image {
+      width: 100px; 
+      height: auto; 
+      border-radius: 5px; 
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      background-color: #5a3e2c;
+      color: white;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .upload-input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .add-btn {
+      background-color: #5a3e2c;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .add-btn:hover {
+      background-color: #7a5a48;
+    }
+
+    .error {
+      color: red;
+      margin: 10px 0;
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav a {
+        margin: 5px 0;
+      }
+
+      table {
+        font-size: 14px; 
+      }
+
+      .case-image {
+        width: 80px; 
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <h1>GOAT HUB</h1>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="special-cases">
+      <h2>Special Cases Reported to RAB</h2>
+
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="error">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+          <thead>
+            <tr>
+              <th>Upload Image</th>
+              <th>District</th>
+              <th>Sector</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="caseTableBody">
+            <tr>
+              <td>
+                <input type="file" name="image" class="upload-input" accept="image/*" required>
+              </td>
+              <td>
+                <input type="text" name="district" placeholder="District" class="upload-input" required>
+              </td>
+              <td>
+                <input type="text" name="sector" placeholder="Sector" class="upload-input" required>
+              </td>
+              <td>
+                <textarea name="description" placeholder="Description" rows="3" class="upload-input" required></textarea>
+              </td>
+              <td>
+                <button type="submit" class="add-btn">Send to RAB</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Goat Hub. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

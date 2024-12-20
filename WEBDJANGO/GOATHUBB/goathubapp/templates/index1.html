@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goat Health Hub</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #006400; /* Green background */
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Navigation Styling */
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #ffcc00;
+            color: black;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .hero img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            max-height: 400px;
+        }
+
+        .hero h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+
+        /* Get Started Button */
+        .get-started {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffcc00;
+            color: black;
+            padding: 12px 24px;
+            border: 2px solid red;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-decoration: none;
+            z-index: 1;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .get-started:hover {
+            background-color: #ffa500;
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: absolute;
+            top: 15%;
+            right: 10%;
+            z-index: 1;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .get-started {
+                padding: 10px 20px;
+            }
+
+            .search-bar input {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Goat Health Hub</h1>
+        <nav>
+            <a href="{% url 'consultations' %}">VET&ADMIN</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <img src="{% static 'images/goat.jpg' %}" alt="A goat grazing in a field" style="border-radius: 10px; max-width: 100%;" />
+
+        <h2>Empowering Goat Farmers with Expert Health Management Tools</h2>
+        <a href="{% url 'login' %}" class="get-started">Get Started</a> <!-- This will redirect to the login page -->
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+    </section>
+</body>
+</html>

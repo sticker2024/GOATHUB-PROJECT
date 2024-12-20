@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}  <!-- Add this line -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultations</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"> <!-- Favicon link -->
+    <style>
+        /* General body styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Navigation bar styling */
+        .navbar {
+            background-color: #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            margin-right: 20px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* Button styling */
+        .reply-button {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .reply-button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        /* Popup container */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1000;
+        }
+
+        .popup-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .popup-field {
+            margin-bottom: 15px;
+        }
+
+        .popup-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .popup-field input,
+        .popup-field textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .popup-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .send-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .send-button:hover {
+            background-color: #218838;
+        }
+
+        .close-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="{% url 'adminHub' %}">Admin</a>
+        <!-- You can add more links here if needed -->
+    </div>
+
+    <h1 class="center">Submitted Consultations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Phone Number</th>
+                <th>Location</th>
+                <th>Message</th>
+                <th>Uploaded Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consultation in consultations %}
+            <tr>
+                <td>{{ consultation.full_name }}</td>
+                <td>{{ consultation.phone_number }}</td>
+                <td>{{ consultation.location }}</td>
+                <td>{{ consultation.message }}</td>
+                <td>
+                    {% if consultation.image %}
+                        <a href="{{ consultation.image.url }}" target="_blank">View Image</a>
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td>
+                    <button class="reply-button" data-name="{{ consultation.full_name }}" data-id="{{ consultation.consultation_id }}">Reply</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="center">No consultations available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup-container" id="popup">
+        <div class="popup-header">Reply to Consultation</div>
+        <form id="replyForm" action="{% url 'reply_to_farmer'%}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="consultationId" name="consultation_id">
+            <div class="popup-field">
+                <label for="farmerName">Farmer Name</label>
+                <input type="text" id="farmerName" name="farmer_name" readonly>
+            </div>
+            <div class="popup-field">
+                <label for="replyMessage">Message</label>
+                <textarea id="replyMessage" name="reply_message" required></textarea>
+            </div>
+            <div class="popup-field">
+                <label for="replyImage">Attach Image (Optional)</label>
+                <input type="file" id="replyImage" name="reply_image" accept="image/*">
+            </div>
+            <div class="popup-actions">
+                <button type="button" class="close-button" onclick="closePopup()">Close</button>
+                <button type="submit" class="send-button">Send</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Add event listeners for all reply buttons
+        document.querySelectorAll('.reply-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                const consultationId = this.getAttribute('data-id');
+                openPopup(name, consultationId);
+            });
+        });
+
+        function openPopup(name, consultationId) {
+            document.getElementById('farmerName').value = name;
+            document.getElementById('consultationId').value = consultationId; // Set the consultation ID
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

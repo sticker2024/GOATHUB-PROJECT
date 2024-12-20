@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #4CAF50;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"] .search-text {
+            font-size: 20px;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .no-image {
+            text-align: center;
+            color: #888;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Color the searched farmer name in the results */
+        .highlight {
+            background-color: #FFFF00;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>All Consultation Replies</h1>
+    
+    <div class="search-container">
+        <form method="GET" action="{% url 'all_replies' %}">
+            <input type="text" name="search" placeholder="Search by Farmer Name" value="{{ search_query }}">
+            <button type="submit"><span class="search-text">Search</span></button>
+        </form>
+    </div>
+
+    <div class="message">
+        {% if replies %}
+            <p>Total Replies: {{ replies.count }}</p>
+        {% else %}
+            <p>NO reply is available when farmer didn't consult a veterinary.</p>
+        {% endif %}
+    </div>
+
+    {% if searched_reply %}
+    <table id="repliesTable">
+        <thead>
+            <tr>
+                <th>Reply ID</th>
+                <th>Consultation ID</th>
+                <th>Farmer Name</th>
+                <th>Reply Message</th>
+                <th>Reply Image</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ searched_reply.reply_id }}</td>
+                <td>{{ searched_reply.consultation.consultation_id }}</td>
+                <td>{% if search_query in searched_reply.farmer_name %}
+                        <span class="highlight">{{ searched_reply.farmer_name }}</span>
+                    {% else %}
+                        {{ searched_reply.farmer_name }}
+                    {% endif %}
+                </td>
+                <td>{{ searched_reply.reply_message }}</td>
+                <td>
+                    {% if searched_reply.reply_image %}
+                        <img src="{{ searched_reply.reply_image.url }}" alt="Reply Image">
+                    {% else %}
+                        <div class="no-image">No image</div>
+                    {% endif %}
+                </td>
+                <td>{{ searched_reply.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="color:purple;">Reply is available</p> <!-- New line added -->
+    {% endif %}
+</body>
+</html>
